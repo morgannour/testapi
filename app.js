@@ -1,12 +1,12 @@
 // Import des modules nécessaires
 const express = require('express');
 const mysql = require('mysql');
-const cors = require('cors');
 require('dotenv').config();
 
 // Création de l'application Express
 const app = express();
-app.use(cors());
+const cors = require('cors');
+app.use(cors({}));
 app.use(express.json());  // Permet de parser les requêtes JSON
 
 // Connexion à la base de données MySQL
