@@ -29,7 +29,7 @@ db.connect((err) => {
 });
 
 // Lancer le serveur
-const port = 3307;
+const port = 5432;
 app.listen(port, () => {
   console.log(`Serveur démarré sur http://localhost:${port}`);
 });
