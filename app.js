@@ -10,15 +10,11 @@ app.use(cors());
 app.use(express.json());  // Permet de parser les requêtes JSON
 
 // Connexion à la base de données MySQL
-const { Client } = require('pg');
-require('dotenv').config();  // Charger les variables depuis le fichier .env
-
-const db = new Client({
-  host: process.env.DB_HOST,  // dpg-ctj7fjtumphs73f8prs0-a (nom de l'hôte interne de Render)
-  user: process.env.DB_USER,  // morgan
-  password: process.env.DB_PASSWORD,  // votre mot de passe
-  database: process.env.DB_NAME,  // test_nr00
-  port: process.env.PORT || 5432  // 5432 est le port par défaut de PostgreSQL
+const db = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
 });
 
 // Vérification de la connexion à la base de données
@@ -27,11 +23,11 @@ db.connect((err) => {
     console.error('Erreur de connexion :', err.message);
     return;
   }
-  console.log('Connecté à la base de données PostgreSQL.');
+  console.log('Connecté à la base de données MySQL.');
 });
 
 // Lancer le serveur
-const port = 5432;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Serveur démarré sur http://localhost:${port}`);
 });
