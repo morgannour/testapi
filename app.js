@@ -27,7 +27,7 @@ db.connect((err) => {
 });
 
 // Lancer le serveur
-const port = process.env.PORT || 3000;
+const port = 3307;
 app.listen(port, () => {
   console.log(`Serveur démarré sur http://localhost:${port}`);
 });
