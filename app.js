@@ -10,29 +10,24 @@ app.use(cors());
 app.use(express.json());  // Permet de parser les requêtes JSON
 
 // Connexion à la base de données MySQL
-const { Client } = require('pg'); // Importez le client PostgreSQL
-
-// Créez une connexion à la base de données PostgreSQL
-const db = new Client({
-  host: process.env.DB_HOST,      // dpg-ctj7fjtumphs73f8prs0-a
-  user: process.env.DB_USER,      // morgan
-  password: process.env.DB_PASSWORD, // HrZxr8BQYh8wR2poeyujIeG3JFkhfbQk
-  database: process.env.DB_NAME,  // test_nr00
-  port: process.env.PORT,         // 5432
+const db = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
 });
 
-// Vérification de la connexion à la base de données PostgreSQL
+// Vérification de la connexion à la base de données
 db.connect((err) => {
   if (err) {
     console.error('Erreur de connexion :', err.message);
     return;
   }
-  console.log('Connecté à la base de données PostgreSQL.');
+  console.log('Connecté à la base de données MySQL.');
 });
 
-
 // Lancer le serveur
-const port = process.env.PORT || 5432;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Serveur démarré sur http://localhost:${port}`);
 });
