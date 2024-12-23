@@ -240,24 +240,36 @@ app.delete('/api/tools/:id', (req, res) => {
 
 // Lister toutes les users
 app.get('/api/tools', (req, res) => {
-  const toolsResults = 'SELECT tools.*, categories.name AS category_name FROM tools JOIN categories ON tools.category = categories.id' ;
-  const categoriesResults = 'select * from categories';
-  db.query(toolsResults, (err, toolsResults) => {
+  const toolsQuery = `
+    SELECT tools.*, categories.name AS category_name
+    FROM tools
+    JOIN categories ON tools.category = categories.id
+  `;
+  const categoriesQuery = 'SELECT * FROM categories';
+
+  // Première requête : Récupération des outils
+  db.query(toolsQuery, (err, toolsResults) => {
     if (err) {
-      return res.status(500).json({ message: "Erreur lors de la récupération les outils." });
+      console.error("Erreur lors de la récupération des outils :", err.message);
+      return res.status(500).json({ message: "Erreur lors de la récupération des outils." });
     }
 
-    db.query(categoriesResults, (err, categoriesResults) => {
+    // Deuxième requête : Récupération des catégories
+    db.query(categoriesQuery, (err, categoriesResults) => {
       if (err) {
-        return res.status(500).json({ message: "Erreur lors de la récupération les outils." });
+        console.error("Erreur lors de la récupération des catégories :", err.message);
+        return res.status(500).json({ message: "Erreur lors de la récupération des catégories." });
       }
-      res.json({
-        tools: toolsResults,
-        categories: categoriesResults
+
+      // Répondre avec les données
+      res.status(200).json({
+        tools: toolsResults.rows || toolsResults,
+        categories: categoriesResults.rows || categoriesResults
       });
-  });
+    });
   });
 });
+
 
 
 
